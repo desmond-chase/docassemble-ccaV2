@@ -1,0 +1,153 @@
+
+---
+metadata:
+  title: |
+    Chase Chase And Associates Client Intake
+  short title: |
+    CCA Client Intake
+---
+
+---
+modules:
+  - docassemble.base.core
+  - docassemble.base.util
+  - .CriminalHistory
+
+---
+---
+mandatory: true
+objects: 
+  - criminal_history: DAList.using(complete_attribute='complete', object_type=DAObject)
+
+---
+---
+mandatory: True
+question: |
+	Have you ever been charged or convicted of a crime in the past?
+yesno: criminal_history.there_are_any
+---
+
+
+
+
+---
+
+code: |
+  criminal_history[i].crime
+  criminal_history[i].charge_type
+  criminal_history[i].event_date
+  criminal_history[i].event_month
+  criminal_history[i].event_year
+  criminal_history[i].complete = True
+---
+
+---
+
+question: |
+	What was the ${ordinal(i)} charge or conviction?
+fields:
+  - Crime: criminal_history[i].crime
+    choices:
+      - Aggravated assault
+      - Aiding and abetting/accessory
+      - Arson
+      - Assault/battery
+      - Attempt
+      - Bribery
+      - Burglary
+      - Child abandonment
+      - Child abuse
+      - Child neglect
+      - Child pornography
+      - Computer crime
+      - Conspiracy
+      - Counterfeiting
+      - Credit/debit card fraud
+      - Criminal contempt of court
+      - Cyberbullying
+      - Disorderly conduct
+      - Disturbing the peace
+      - Domestic violence
+      - Drug manufacturing and cultivation
+      - Drug possession
+      - Drug trafficking/distribution
+      - DUI/DWI
+      - Embezzlement
+      - Extortion
+      - Forgery
+      - Fraud
+      - Harassment
+      - Hate crimes
+      - Homicide
+      - Identity theft
+      - Insurance fraud
+      - Identity theft
+      - Kidnapping
+      - Manslaughter: Involuntary
+      - Manslaughter: Voluntary
+      - Medical Marijuana
+      - MIP: A minor in possession
+      - Money laundering
+      - Murder: First degree
+      - Murder: Second degree
+      - Obstruction of justice
+      - Open container (of alcohol)
+      - Parole violation
+      - Perjury
+      - Probation violation
+      - Prostitution
+      - Public intoxication
+      - Pyramid schemes
+      - Racketeering/RICO
+      - Rape
+      - Robbery
+      - Securities fraud
+      - Sexual assault
+      - Shoplifting
+      - Solicitation
+      - Stalking
+      - Statutory rape
+      - Tax evasion/fraud
+      - Telemarketing fraud
+      - Theft
+      - Vandalism
+      - White collar crimes
+      - Wire fraud
+  - What happened with charges: criminal_history[i].charge_type
+    choices:
+      - Charged but charges dropped
+      - Charged but never arrested
+      - Charged and convicted
+  
+    
+     
+---
+---
+question: |
+  When were ${criminal_history[i].charge_type} for the ${ordinal(i)} ${criminal_history[i].crime}? Enter the exact date if you know it or month and year
+fields:
+  - Exact Date: criminal_history[i].event_date
+    datatype: date
+    required: False
+  - Month: criminal_history[i].event_month
+    required: False
+  - Year: criminal_history[i].event_year
+    required: False
+---
+
+question: |
+	Are there any more charges or convictions you have had?
+yesno: criminal_history.there_is_another
+---
+
+---
+mandatory: true
+question: |
+  Please review this information to see if it is correct
+subquestion: |
+  % for crime in criminal_history:
+    You were charged with ${crime.crime} and ${crime.charge_type} on ${crime.event_date}
+  % endfor
+continue button field: continue_with_criminal_history
+---
+

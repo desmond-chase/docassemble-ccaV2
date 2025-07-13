@@ -1,0 +1,125 @@
+---
+metadata:
+  title: |
+    Chase Chase And Associates Client Intake
+  short title: |
+    CCA Client Intake
+---
+
+---
+modules:
+  - docassemble.base.core
+  - docassemble.base.util
+ 
+
+---
+---
+mandatory: true
+objects: 
+  - alleged_crimes: DAList.using(complete_attribute='complete')
+
+---
+
+
+---
+mandatory: true
+question: |
+  Have you been charged with any crime(s) currently?
+yesno: alleged_crimes.there_are_any
+
+---
+
+---
+
+question: |
+	What is the ${ordinal(i)} crime that you are currently being charged with?
+fields:
+  - Alleged Crime: alleged_crimes[i]
+    choices:
+      - Aggravated assault
+      - Aiding and abetting/accessory
+      - Arson
+      - Assault/battery
+      - Attempt
+      - Bribery
+      - Burglary
+      - Child abandonment
+      - Child abuse
+      - Child neglect
+      - Child pornography
+      - Computer crime
+      - Conspiracy
+      - Counterfeiting
+      - Credit/debit card fraud
+      - Criminal contempt of court
+      - Cyberbullying
+      - Disorderly conduct
+      - Disturbing the peace
+      - Domestic violence
+      - Drug manufacturing and cultivation
+      - Drug possession
+      - Drug trafficking/distribution
+      - DUI/DWI
+      - Embezzlement
+      - Extortion
+      - Forgery
+      - Fraud
+      - Harassment
+      - Hate crimes
+      - Homicide
+      - Identity theft
+      - Insurance fraud
+      - Identity theft
+      - Kidnapping
+      - Manslaughter: Involuntary
+      - Manslaughter: Voluntary
+      - Medical Marijuana
+      - MIP: A minor in possession
+      - Money laundering
+      - Murder: First degree
+      - Murder: Second degree
+      - Obstruction of justice
+      - Open container (of alcohol)
+      - Parole violation
+      - Perjury
+      - Probation violation
+      - Prostitution
+      - Public intoxication
+      - Pyramid schemes
+      - Racketeering/RICO
+      - Rape
+      - Robbery
+      - Securities fraud
+      - Sexual assault
+      - Shoplifting
+      - Solicitation
+      - Stalking
+      - Statutory rape
+      - Tax evasion/fraud
+      - Telemarketing fraud
+      - Theft
+      - Vandalism
+      - White collar crimes
+      - Wire fraud
+
+  
+---
+
+
+---
+
+question: |
+	So far your alleged crimes include ${alleged_crimes}.  Are there any more?
+yesno: alleged_crimes.there_is_another
+---
+
+---
+mandatory: true
+question: |
+  You are currently being charged with the following crimes
+subquestion: |
+  % for crime in alleged_crimes:
+    ${crime}
+  % endfor
+continue button field: continue_with_criminal_intake
+---

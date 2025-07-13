@@ -1,0 +1,166 @@
+---
+metadata:
+  title: |
+    Chase Chase And Associates Client Intake
+  short title: |
+    CCA Client Intake
+---
+
+---
+modules:
+  - docassemble.base.core
+  - docassemble.base.util
+  - .SaveNewClient
+
+---
+
+---
+objects:
+  - children: DAList.using(complete_attribute='complete')
+  - individual_client: Individual
+---
+
+question: |
+  We are going ask you few questions about yourself.  Hit continue to proceed.
+continue button field: continue_to_complete_contact_info
+mandatory: true
+---
+
+question: |
+  What is the name of the individual_client?
+fields:
+    - First Name: individual_client.name.first
+      default: Jane
+    - Middle Name or Initial: individual_client.name.middle
+      required: False
+    - Last Name: individual_client.name.last
+      default: Doe
+mandatory: true
+---
+
+question: |
+  What is your current address?
+fields:
+    - Address Line 1: individual_client.address.address
+      default: 123 Main Street
+    - City: individual_client.address.city
+      default: Biloxi
+    - County: individual_client_county
+      choices:
+        - Harrison : Harrison
+        - Jackson : Jackson 
+        - Hancock : Hancock
+      default: Harrison
+    - State: individual_client.address.state
+      code: |
+       states_list()
+      default: Mississippi
+    - Country: individual_client.address.country
+      code: |
+        countries_list()
+      default: United States
+    - Postal Code: individual_client.address.postal_code
+      default: 39531
+mandatory: true
+
+---
+
+---
+mandatory: True
+question : |
+  Do you have an email address that we can contact you at?
+yesno: individual_client.has_email
+  
+---
+---
+mandatory: individual_client.has_email
+question: |
+  What is your email address?
+fields:
+  - E-mail: individual_client.email
+    datatype: email
+---
+
+---
+mandatory: True
+question: |
+  Do you have a cell phone number?
+yesno: individual_client.has_cell_phone
+---
+---
+mandatory: individual_client.has_cell_phone
+question: |
+  What is your cell phone number?
+fields:
+  - Cell Phone Number: individual_client.cell_phone_number
+---
+
+---
+mandatory: True
+question: |
+  Do you have a work phone number?
+yesno: individual_client.has_work_phone
+---
+---
+mandatory: individual_client.has_work_phone
+question: |
+  What is your work phone number?
+fields:
+  - Work Phone Number: individual_client.work_phone_number
+---
+
+
+---
+question: |
+  What is your date of birth?
+fields:
+ - Age: individual_client.birthdate
+   datatype: date
+   default: 1/1/1986
+mandatory: true
+---
+
+---
+question: |
+ What is your gender male or female?
+fields:
+- Sex: individual_client.gender
+  input type: radio
+  choices:
+  - Male
+  - Female
+  default: Female
+mandatory: true
+---
+question: |
+  What is your ethinicity?
+fields:
+- Ethinicity: individual_client_ethnicity
+  default: Black/African American
+  choices:
+     - Black/African American
+     - White/Caucasian
+     - Asian/Asian American
+     - Hispanic/ Hispanic American
+     - Mixed (Black/White)
+     - Mixed (Black/Asian)
+     - Mixed (Black/Hispanic)
+     - Mixed (Hispanic/White)
+     - Mixed (Hispanic/Asian)
+     - Mixed (Asian/White)
+mandatory: true
+---
+
+---
+code: |
+  new_client = all_variables()
+---
+
+---
+mandatory: true
+code: |
+ 
+  unitOfWork = MongoDB("DocassembleDatabase")
+  unitOfWork.addNewClientFromInterview(new_client)
+---
+
